@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+    http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+
+	
+	<bean id="netPointService" class="com.threecube.test.service.impl.NetPointServiceImpl"/>   
+	
+	<bean name="netPointExporter" class="org.springframework.remoting.httpinvoker.HttpInvokerServiceExporter">
+    	<property name="service" ref="netPointService"/>
+    	<property name="serviceInterface" value="com.threecube.test.service.NetPointService"/>
+	</bean>	
+	
+	<!-- 将特定的请求映射到具体的hessianservice -->  
+	<bean id="urlMapping" class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">  
+    	<property name="mappings">  
+        <props>  
+            <prop key="/httpInvokerService.service">netPointExporter</prop>  
+        </props>  
+    	</property>  
+	</bean>
+</beans>
